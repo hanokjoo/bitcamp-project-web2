@@ -73,7 +73,7 @@ public class MemberMysqlDao implements StudentDao {
     Connection con = ds.getConnection();
     try (
       PreparedStatement stmt = con.prepareStatement(
-          "update memb set email=?, pwd=?, name=?, tel=? where mno=?"); ){
+          "update memb set email=?, pwd=password(?), name=?, tel=? where mno=?"); ){
       stmt.setString(1, member.getEmail());
       stmt.setString(2, member.getPassword());
       stmt.setString(3, member.getName());

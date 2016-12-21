@@ -122,18 +122,18 @@ public class StudentMysqlDao implements StudentDao {
   }
   
   public void delete(int memberNo) throws Exception {
-   Connection con = ds.getConnection();
-   try (
-     PreparedStatement stmt = con.prepareStatement(
-         "delete from stud where sno=?"); ){
-     
-     stmt.setInt(1, memberNo);
-     
-     stmt.executeUpdate();
+    Connection con = ds.getConnection();
+    try (
+      PreparedStatement stmt = con.prepareStatement(
+          "delete from stud where sno=?"); ){
        
-   } finally {
-     ds.returnConnection(con);
-   }
+      stmt.setInt(1, memberNo);
+     
+      stmt.executeUpdate();
+       
+    } finally {
+      ds.returnConnection(con);
+    }
   }
   
   public boolean exist(int memberNo) throws Exception {
