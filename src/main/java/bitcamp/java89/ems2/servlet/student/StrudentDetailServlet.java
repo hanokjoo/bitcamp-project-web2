@@ -3,6 +3,7 @@ package bitcamp.java89.ems2.servlet.student;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,22 +19,28 @@ public class StrudentDetailServlet extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    int memberNo = Integer.parseInt(request.getParameter("memberNo"));
-    
-    response.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = response.getWriter();
-    
-    out.println("<!DOCTYPE html>");
-    out.println("<html>");
-    out.println("<head>");
-    out.println("<meta charset='UTF-8'>");
-    out.println("<title>학생 관리-상세정보</title>");
-    out.println("</head>");
-    out.println("<body>");
-    out.println("<h1>학생 정보</h1>");
-    out.println("<form action='update' method='POST'>");
     
     try {
+      int memberNo = Integer.parseInt(request.getParameter("memberNo"));
+
+      response.setContentType("text/html;charset=UTF-8");
+      PrintWriter out = response.getWriter();
+      
+      out.println("<!DOCTYPE html>");
+      out.println("<html>");
+      out.println("<head>");
+      out.println("<meta charset='UTF-8'>");
+      out.println("<title>학생 관리-상세정보</title>");
+      out.println("</head>");
+      out.println("<body>");
+      
+      // HeaderServlet에게 머리말 HTML 생성을 요청한다.
+      RequestDispatcher rd = request.getRequestDispatcher("/header");
+      rd.include(request, response);
+      
+      out.println("<h1>학생 정보</h1>");
+      out.println("<form action='update' method='POST'>");
+
       StudentMysqlDao studentDao = StudentMysqlDao.getInstance();
       
       Student student = studentDao.getOne(memberNo);
@@ -47,8 +54,8 @@ public class StrudentDetailServlet extends HttpServlet {
       out.printf("<tr><th>이름</th><td><input name='name' type='text' value='%s'></td></tr>\n", student.getName());
       out.printf("<tr><th>전화</th><td><input name='tel' type='text' value='%s'></td></tr>\n", student.getTel());
       out.printf("<tr><th>재직여부</th><td>"
-          + "<input type='radio' name='working' value='Y' %s>재직중"
-          + "<input type='radio' name='working' value='N' %s>실업/미취업</td></tr>\n",
+          + "<input type='radio' name='working' value='true' %s>재직중"
+          + "<input type='radio' name='working' value='false' %s>실업/미취업</td></tr>\n",
           (student.isWorking() ? "checked": ""), 
           (student.isWorking() ? "" : "checked"));
       out.println("<tr><th>최종학력</th><td>");
@@ -69,12 +76,20 @@ public class StrudentDetailServlet extends HttpServlet {
     
       out.printf("<input type='hidden' name='memberNo' value='%d'>\n", student.getMemberNo());
       
+      out.println("<a href='list'>목록</a>");
+      out.println("</form>");
+      
+   // FooterServlet에게 꼬리말 HTML 생성을 요청한다.
+      rd = request.getRequestDispatcher("/footer");
+      rd.include(request, response);
+      
+      out.println("</body>");
+      out.println("</html>");
+
     } catch (Exception e) {
-      out.printf("<p>%s</p>\n", e.getMessage());
+      RequestDispatcher rd = request.getRequestDispatcher("/error");
+      rd.forward(request, response);
+      return;
     }
-    out.println("<a href='list'>목록</a>");
-    out.println("</form>");
-    out.println("</body>");
-    out.println("</html>");
   }
 }

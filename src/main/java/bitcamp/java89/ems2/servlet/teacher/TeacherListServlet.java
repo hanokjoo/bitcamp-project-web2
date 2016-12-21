@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,24 +20,29 @@ public class TeacherListServlet extends HttpServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    response.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = response.getWriter();
-    
-    out.println("<!DOCTYPE html>");
-    out.println("<html>");
-    out.println("<head>");
-    out.println("<meta charset='UTF-8'>");
-    out.println("<title>강사 관리-목록</title>");
-    out.println("</head>");
-    out.println("<body>");
-    out.println("<h1>강사 정보</h1>");
-    out.println("<a href='form.html'>추가</a><br>");
-    out.println("<table border='1'>");
-    out.println("<tr>");
-    out.println("  <th>강사번호</th><th>이름</th><th>전화</th><th>이메일</th><th>홈페이지</th>");
-    out.println("</tr>");
-    
     try {
+      response.setContentType("text/html;charset=UTF-8");
+      PrintWriter out = response.getWriter();
+      
+      out.println("<!DOCTYPE html>");
+      out.println("<html>");
+      out.println("<head>");
+      out.println("<meta charset='UTF-8'>");
+      out.println("<title>강사 관리-목록</title>");
+      out.println("</head>");
+      out.println("<body>");
+   
+      // HeaderServlet에게 머리말 HTML 생성을 요청한다.
+      RequestDispatcher rd = request.getRequestDispatcher("/header");
+      rd.include(request, response);
+      
+      out.println("<h1>강사 정보</h1>");
+      out.println("<a href='form.html'>추가</a><br>");
+      out.println("<table border='1'>");
+      out.println("<tr>");
+      out.println("  <th>강사번호</th><th>이름</th><th>전화</th><th>이메일</th><th>홈페이지</th>");
+      out.println("</tr>");
+      
       TeacherMysqlDao teacherDao = TeacherMysqlDao.getInstance();
       ArrayList<Teacher> list = teacherDao.getList(); 
       
@@ -51,10 +57,18 @@ public class TeacherListServlet extends HttpServlet {
         out.println("</tr>");
       }
       out.println("</table>");
+      
+   // FooterServlet에게 꼬리말 HTML 생성을 요청한다.
+      rd = request.getRequestDispatcher("/footer");
+      rd.include(request, response);
+      
       out.println("</body>");
       out.println("</html>");
+      
     } catch (Exception e) {
-      throw new ServletException(e);
+      RequestDispatcher rd = request.getRequestDispatcher("/error");
+      rd.forward(request, response);
+      return;
     }
   }
   
