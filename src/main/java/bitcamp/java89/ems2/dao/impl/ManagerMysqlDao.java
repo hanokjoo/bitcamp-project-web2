@@ -5,26 +5,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import bitcamp.java89.ems2.dao.StudentDao;
+import bitcamp.java89.ems2.dao.ManagerDao;
 import bitcamp.java89.ems2.domain.Manager;
 import bitcamp.java89.ems2.util.DataSource;
 
-public class ManagerMysqlDao implements StudentDao {
+public class ManagerMysqlDao implements ManagerDao {
   
   DataSource ds;
   
-  private ManagerMysqlDao() {
-    ds = DataSource.getInstance();
+  public void setDataSource(DataSource ds) {
+    this.ds = ds;
   }
-  
-  static ManagerMysqlDao instance;
-  public static ManagerMysqlDao getInstance() {
-    if (instance == null) {
-      instance = new ManagerMysqlDao();
-    }
-    return instance;
-  }
-  
+
   public ArrayList<Manager> getList() throws Exception {
     ArrayList<Manager> list = new ArrayList<>();
     Connection con = ds.getConnection();

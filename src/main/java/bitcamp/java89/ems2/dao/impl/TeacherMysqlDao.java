@@ -5,24 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import bitcamp.java89.ems2.dao.StudentDao;
+import bitcamp.java89.ems2.dao.TeacherDao;
 import bitcamp.java89.ems2.domain.Teacher;
 import bitcamp.java89.ems2.util.DataSource;
 
-public class TeacherMysqlDao implements StudentDao {
+public class TeacherMysqlDao implements TeacherDao {
   
   DataSource ds;
   
-  private TeacherMysqlDao() {
-    ds = DataSource.getInstance();
-  }
-  
-  static TeacherMysqlDao instance;
-  public static TeacherMysqlDao getInstance() {
-    if (instance == null) {
-      instance = new TeacherMysqlDao();
-    }
-    return instance;
+  public void setDataSource(DataSource ds) {
+    this.ds = ds;
   }
  
   public ArrayList<Teacher> getList() throws Exception {

@@ -6,24 +6,16 @@ import java.sql.ResultSet;
 
 import com.mysql.jdbc.Statement;
 
-import bitcamp.java89.ems2.dao.StudentDao;
+import bitcamp.java89.ems2.dao.MemberDao;
 import bitcamp.java89.ems2.domain.Member;
 import bitcamp.java89.ems2.util.DataSource;
 
-public class MemberMysqlDao implements StudentDao {
+public class MemberMysqlDao implements MemberDao {
   
   DataSource ds;
   
-  private MemberMysqlDao() {
-    ds = DataSource.getInstance();
-  }
-  
-  static MemberMysqlDao instance;
-  public static MemberMysqlDao getInstance() {
-    if (instance == null) {
-      instance = new MemberMysqlDao();
-    }
-    return instance;
+  public void setDataSource(DataSource ds) {
+    this.ds = ds;
   }
 
   public boolean exist(String email) throws Exception {

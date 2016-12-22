@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import bitcamp.java89.ems2.dao.impl.ManagerMysqlDao;
+import bitcamp.java89.ems2.dao.ManagerDao;
 import bitcamp.java89.ems2.domain.Manager;
 
 @WebServlet("/manager/list")
@@ -43,7 +43,7 @@ public class ManagerListServlet extends HttpServlet {
       out.println("  <th>매니저번호</th><th>이름</th><th>전화</th><th>이메일</th><th>직급</th><th>팩스번호</th>");
       out.println("</tr>");
       
-      ManagerMysqlDao managerDao = ManagerMysqlDao.getInstance();
+      ManagerDao managerDao = (ManagerDao)this.getServletContext().getAttribute("managerDao");
       ArrayList<Manager> list = managerDao.getList(); 
       
       for (Manager manager : list) {
