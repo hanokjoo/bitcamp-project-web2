@@ -39,6 +39,29 @@ public class MemberMysqlDao implements MemberDao {
     }
   }
   
+  @Override
+  public boolean exist(String email, String password) throws Exception {
+    Connection con = ds.getConnection();
+    try (
+      PreparedStatement stmt = con.prepareStatement(
+        "select count(*) from memb where email=? and pwd=password(?)"); ){
+      stmt.setString(1, email);
+      stmt.setString(2, password);
+      ResultSet rs = stmt.executeQuery();
+      
+      rs.next();
+      int count = rs.getInt(1);
+      rs.close();
+      if (count > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } finally {
+      ds.returnConnection(con);
+    }
+  }
+  
   public void insert(Member member) throws Exception {
     Connection con = ds.getConnection();
     try ( 

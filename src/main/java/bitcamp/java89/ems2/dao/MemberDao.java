@@ -8,4 +8,5 @@ public interface MemberDao {
   public void update(Member member) throws Exception;
   public void delete(int memberNo) throws Exception;
   boolean exist(String email) throws Exception;
+  boolean exist(String email, String password) throws Exception;
 }
