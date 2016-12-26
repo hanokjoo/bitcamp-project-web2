@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bitcamp.java89.ems2.domain.Member;
+
 @WebServlet("/header")
 public class HeaderServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
@@ -20,12 +22,28 @@ public class HeaderServlet extends HttpServlet {
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
 
-    out.println("<div id='header' style='background-color: gray; height: 60px;'>");
+    out.println("<div id='header' style='background-color: gray; height: 60px;"
+        + " position:relative;'>");
+    out.println("<div style='width:300px; height:58px; "
+        + " position:absolute; left:0px; top:0px;'>");
     out.println("<img src='../image/go.jpg' "
         + "height='50' style='float: left; margin-top: 5px; margin-left: 5px;'>");
     out.println("<div style='color: white; font-weight: bold; "
         + "margin-left: 80px; padding-top: 15px; font-family: D2Coding, sans-serif; "
         + "font-size: x-large;'>교육센터관리시스템</div>");
+    out.println("</div>");
+    out.println("<div style='width:200px; height:58px;"
+        + " position:absolute; right:0px; top:0px; margin-right:10px;'>");
+    // 로그인 사용자 정보를 가져온다.
+    Member member = (Member)request.getSession().getAttribute("member");
+    
+    if (member == null) {
+      out.println("<a href='../auth/login' style='position:absolute; right:0px; top:15px;'>로그인</a>");
+    } else {
+      out.printf("<span style='position:absolute; right:70px; top:15px;'>%s</span>\n", member.getName());
+      out.println("<a href='../auth/logout' style='position:absolute; right:0px; top:15px;'>로그아웃</a>");
+    }
+    out.println("</div>");
     out.println("</div>");
   }
 }
