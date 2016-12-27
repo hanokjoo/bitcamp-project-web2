@@ -52,19 +52,23 @@ public class ManagerMysqlDao implements ManagerDao {
           "select name, tel, email, posi, fax, path from mgr left outer join memb on mgr.mrno=memb.mno where mrno=?"); ){
       stmt.setInt(1, memberNo);
       ResultSet rs = stmt.executeQuery();
-      rs.next();
       
-      Manager manager = new Manager();
-      manager.setMemberNo(memberNo);
-      manager.setName(rs.getString("name"));
-      manager.setTel(rs.getString("tel"));
-      manager.setEmail(rs.getString("email"));
-      manager.setPosition(rs.getString("posi"));
-      manager.setFaxNum(rs.getString("fax"));
-      manager.setPhotoPath(rs.getString("path"));
-      rs.close();
- 
-      return manager;
+      if (rs.next()) {
+        Manager manager = new Manager();
+        manager.setMemberNo(memberNo);
+        manager.setName(rs.getString("name"));
+        manager.setTel(rs.getString("tel"));
+        manager.setEmail(rs.getString("email"));
+        manager.setPosition(rs.getString("posi"));
+        manager.setFaxNum(rs.getString("fax"));
+        manager.setPhotoPath(rs.getString("path"));
+        rs.close();
+   
+        return manager;
+      } else {
+        rs.close();
+        return null;
+      }
       
     } finally {
       ds.returnConnection(con);

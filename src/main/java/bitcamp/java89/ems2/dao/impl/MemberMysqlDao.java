@@ -39,23 +39,26 @@ public class MemberMysqlDao implements MemberDao {
     }
   }
   
-  @Override
-  public boolean exist(String email, String password) throws Exception {
+  public Member getOne(String email, String password) throws Exception {
     Connection con = ds.getConnection();
     try (
       PreparedStatement stmt = con.prepareStatement(
-        "select count(*) from memb where email=? and pwd=password(?)"); ){
+        "select mno, name, tel, email from memb where email=? and pwd=password(?)"); ){
       stmt.setString(1, email);
       stmt.setString(2, password);
       ResultSet rs = stmt.executeQuery();
       
-      rs.next();
-      int count = rs.getInt(1);
-      rs.close();
-      if (count > 0) {
-        return true;
+      if (rs.next()) {
+        Member member = new Member();
+        member.setMemberNo(rs.getInt("mno"));
+        member.setEmail(rs.getString("email"));
+        member.setName(rs.getString("name"));
+        member.setTel(rs.getString("tel"));
+        rs.close();
+        return member;
       } else {
-        return false;
+        rs.close();
+        return null;
       }
     } finally {
       ds.returnConnection(con);
@@ -126,16 +129,19 @@ public class MemberMysqlDao implements MemberDao {
               + " where email=?"); ){
       stmt.setString(1, email);
       ResultSet rs = stmt.executeQuery();
-      rs.next();
       
-      Member member = new Member();
-      member.setMemberNo(rs.getInt("mno"));
-      member.setEmail(rs.getString("email"));
-      member.setName(rs.getString("name"));
-      member.setTel(rs.getString("tel"));
-      rs.close();
- 
-      return member;
+      if (rs.next()) {
+        Member member = new Member();
+        member.setMemberNo(rs.getInt("mno"));
+        member.setEmail(rs.getString("email"));
+        member.setName(rs.getString("name"));
+        member.setTel(rs.getString("tel"));
+        rs.close();
+        return member;
+      } else {
+        rs.close();
+        return null;
+      }
       
     } finally {
       ds.returnConnection(con);
