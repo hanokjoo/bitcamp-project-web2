@@ -39,7 +39,7 @@ public class StrudentDetailServlet extends HttpServlet {
       rd.include(request, response);
       
       out.println("<h1>학생 정보</h1>");
-      out.println("<form action='update' method='POST'>");
+      out.println("<form action='update' method='POST' enctype='multipart/form-data'>");
 
       StudentDao studentDao = (StudentDao)this.getServletContext().getAttribute("studentDao");
       
@@ -68,7 +68,9 @@ public class StrudentDetailServlet extends HttpServlet {
       out.println("</select>");
       out.println("</td></tr>");
       out.printf("<tr><th>학교명</th><td><input name='schoolName' type='text' value='%s'></td></tr>\n", student.getSchoolName());
-      out.printf("<tr><th>사진</th><td><input name='photoPath' type='file'></td></tr>");
+      out.printf("<tr><th>사진</th><td>"
+          + "<img src='../upload/%s' height='80'>"
+          + "<input name='photoPath' type='file'></td></tr>", student.getPhotoPath());
       out.println("</table>");
       
       out.println("<button type='submit'>변경</button>");

@@ -1,5 +1,35 @@
 # bitcamp-project-web2
 
+## 1.2 - 학생 등록시 사진 업로드하기
+- 의존 라이브러리 설정하기
+  - build.gradle 파일에 apache-fileupload 라이브러리 추가
+  - "gradle eclipse" 명령을 수행하여 이클립스 설정 파일을 갱신
+- 학생 사진 업로드
+  - student/form.html 파일 변경
+    - form 태그에 enctype 속성 추가
+  - StudentAddServlet 클래스 변경
+    - fileupdload 라이브러리의 클래스를 사용하여 멀티파트 데이터 처리
+  - StudentDetailServlet 클래스 변경
+    - 사진 출력
+- 매니저 사진 업로드
+  - manager/form.html 파일 변경
+    - form 태그에 enctype 속성 추가
+  - ManagerAddServlet 클래스 변경
+    - fileupdload 라이브러리의 클래스를 사용하여 멀티파트 데이터 처리
+  - ManagerDetailServlet 클래스 변경
+    - 사진 출력
+- 사진 정보를 저장할 클래스 생성
+  - Photo.java
+- 강사 사진 업로드
+  - teacher 클래스 수정
+  - teacher/form.html 파일 변경
+    - form 태그에 enctype 속성 추가
+  - TeacherAddServlet 클래스 변경
+    - fileupdload 라이브러리의 클래스를 사용하여 멀티파트 데이터 처리
+  - TeacherDetailServlet 클래스 변경
+    - 사진 출력
+  - TeacherDao 변경
+
 ## 1.1 - 세션을 이용하여 로그인 사용자 정보 저장하고 꺼내기
 - LoginSservlet의 doPost()변경
   - MemberDao를 이용하여 로그인 사용자 정보를 가져온다.

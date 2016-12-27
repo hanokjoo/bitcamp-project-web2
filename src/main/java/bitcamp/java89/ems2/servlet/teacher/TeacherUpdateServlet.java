@@ -2,6 +2,8 @@ package bitcamp.java89.ems2.servlet.teacher;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,7 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import bitcamp.java89.ems2.dao.MemberDao;
 import bitcamp.java89.ems2.dao.TeacherDao;
+import bitcamp.java89.ems2.domain.Photo;
 import bitcamp.java89.ems2.domain.Teacher;
+import bitcamp.java89.ems2.util.MultipartUtil;
 
 @WebServlet("/teacher/update")
 public class TeacherUpdateServlet extends HttpServlet {
@@ -21,15 +25,24 @@ public class TeacherUpdateServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
+      Map<String, String> dataMap = MultipartUtil.parse(request);
+      
       Teacher teacher = new Teacher();
-      teacher.setMemberNo(Integer.parseInt(request.getParameter("memberNo")));
-      teacher.setEmail(request.getParameter("email"));
-      teacher.setPassword(request.getParameter("password"));
-      teacher.setName(request.getParameter("name"));
-      teacher.setTel(request.getParameter("tel"));
-      teacher.setHomePage(request.getParameter("homePage"));
-      teacher.setFaceBook(request.getParameter("faceBook"));
-      teacher.setTwitter(request.getParameter("twitter"));
+      teacher.setMemberNo(Integer.parseInt(dataMap.get("memberNo")));
+      teacher.setEmail(dataMap.get("email"));
+      teacher.setPassword(dataMap.get("password"));
+      teacher.setName(dataMap.get("name"));
+      teacher.setTel(dataMap.get("tel"));
+      teacher.setHomePage(dataMap.get("homePage"));
+      teacher.setFaceBook(dataMap.get("faceBook"));
+      teacher.setTwitter(dataMap.get("twitter"));
+      
+      ArrayList<Photo> photoList = new ArrayList<>();
+      photoList.add(new Photo(dataMap.get("photoPath1")));
+      photoList.add(new Photo(dataMap.get("photoPath2")));
+      photoList.add(new Photo(dataMap.get("photoPath3")));
+      
+      teacher.setPhotoList(photoList);
       
       response.setHeader("Refresh", "1;url=list");
       response.setContentType("text/html;charset=UTF-8");

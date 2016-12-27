@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 
 import bitcamp.java89.ems2.dao.TeacherDao;
+import bitcamp.java89.ems2.domain.Photo;
 import bitcamp.java89.ems2.domain.Teacher;
 import bitcamp.java89.ems2.util.DataSource;
 
@@ -46,24 +48,42 @@ public class TeacherMysqlDao implements TeacherDao {
     Connection con = ds.getConnection();
     try (
         /*
-         select name, tel, email, hmpg, fcbk, twit from tcher left outer join memb on tcher.tno=memb.mno where mno=
+         select name, tel, email, hmpg, fcbk, twit, tch_phot.path
+         from tcher
+         left outer join memb on tcher.tno=memb.mno
+         left outer join tch_phot on tcher.tno=tch_phot.tno
+         where tcher.tno=40;
          */
       PreparedStatement stmt = con.prepareStatement(
-          "select name, tel, email, hmpg, fcbk, twit from tcher left outer join memb on tcher.tno=memb.mno where tno=?"); ){
+          "select name, tel, email, hmpg, fcbk, twit, tpno, tch_phot.path"
+          + " from tcher"
+          + " left outer join memb on tcher.tno=memb.mno"
+          + " left outer join tch_phot on tcher.tno=tch_phot.tno"
+          + " where tcher.tno=?"); ){
       stmt.setInt(1, memberNo);
       ResultSet rs = stmt.executeQuery();
-      rs.next();
       
-      Teacher teacher = new Teacher();
-      teacher.setMemberNo(memberNo);
-      teacher.setName(rs.getString("name"));
-      teacher.setTel(rs.getString("tel"));
-      teacher.setEmail(rs.getString("email"));
-      teacher.setHomePage(rs.getString("hmpg"));
-      teacher.setFaceBook(rs.getString("fcbk"));
-      teacher.setTwitter(rs.getString("twit"));
+      Teacher teacher = null;
+      ArrayList<Photo> photoList = new ArrayList<>();
+      while (rs.next()) {
+        if (teacher == null) {
+          teacher = new Teacher();
+          teacher.setMemberNo(memberNo);
+          teacher.setName(rs.getString("name"));
+          teacher.setTel(rs.getString("tel"));
+          teacher.setEmail(rs.getString("email"));
+          teacher.setHomePage(rs.getString("hmpg"));
+          teacher.setFaceBook(rs.getString("fcbk"));
+          teacher.setTwitter(rs.getString("twit"));
+        }
+        if (rs.getString("path") != null) {
+          photoList.add(new Photo()
+                           .setNo(rs.getInt("tpno"))
+                           .setFilePath(rs.getString("path")));
+        }
+      }
       rs.close();
- 
+      teacher.setPhotoList(photoList);
       return teacher;
       
     } finally {
@@ -84,6 +104,30 @@ public class TeacherMysqlDao implements TeacherDao {
       
       stmt.executeUpdate();
       
+      this.insertPhotoList(teacher);
+      
+    } finally {
+      ds.returnConnection(con);
+    }
+  }
+  
+  public void insertPhotoList(Teacher teacher) throws Exception {
+    Connection con = ds.getConnection();
+    try (
+      PreparedStatement stmt = con.prepareStatement(
+          "insert into tch_phot(tno, path) values(?, ?)");){
+      
+      List<Photo> photoList = teacher.getPhotoList();
+      for (Photo photo : photoList) {
+        if (photo.getFilePath() == null) {
+          continue;
+        }
+        stmt.setInt(1, teacher.getMemberNo());
+        stmt.setString(2, photo.getFilePath());
+        
+        stmt.executeUpdate();
+      }
+
     } finally {
       ds.returnConnection(con);
     }
@@ -100,7 +144,10 @@ public class TeacherMysqlDao implements TeacherDao {
       stmt.setInt(4, teacher.getMemberNo());
       
       stmt.executeUpdate();
-
+      
+      this.deletePhotoList(teacher);
+      this.insertPhotoList(teacher);
+      
     } finally {
       ds.returnConnection(con);
     }
@@ -113,6 +160,21 @@ public class TeacherMysqlDao implements TeacherDao {
           "delete from tcher where tno=?"); ){
        
       stmt.setInt(1, memberNo);
+     
+      stmt.executeUpdate();
+       
+    } finally {
+      ds.returnConnection(con);
+    }
+  }
+  
+  public void deletePhotoList(Teacher teacher) throws Exception {
+    Connection con = ds.getConnection();
+    try (
+      PreparedStatement stmt = con.prepareStatement(
+          "delete from tch_phot where tno=?"); ){
+       
+      stmt.setInt(1, teacher.getMemberNo());
      
       stmt.executeUpdate();
        

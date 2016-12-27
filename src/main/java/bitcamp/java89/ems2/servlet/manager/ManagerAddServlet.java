@@ -2,6 +2,7 @@ package bitcamp.java89.ems2.servlet.manager;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,6 +15,7 @@ import bitcamp.java89.ems2.dao.ManagerDao;
 import bitcamp.java89.ems2.dao.MemberDao;
 import bitcamp.java89.ems2.domain.Manager;
 import bitcamp.java89.ems2.domain.Member;
+import bitcamp.java89.ems2.util.MultipartUtil;
 
 @WebServlet("/manager/add")
 public class ManagerAddServlet extends HttpServlet {
@@ -22,14 +24,16 @@ public class ManagerAddServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
+      Map<String, String> dataMap = MultipartUtil.parse(request);
+      
       Manager manager = new Manager();
-      manager.setEmail(request.getParameter("email"));
-      manager.setPassword(request.getParameter("password"));
-      manager.setName(request.getParameter("name"));
-      manager.setTel(request.getParameter("tel"));
-      manager.setPosition(request.getParameter("position"));
-      manager.setFaxNum(request.getParameter("faxNum"));
-      manager.setPhotoPath(request.getParameter("photoPath"));
+      manager.setEmail(dataMap.get("email"));
+      manager.setPassword(dataMap.get("password"));
+      manager.setName(dataMap.get("name"));
+      manager.setTel(dataMap.get("tel"));
+      manager.setPosition(dataMap.get("position"));
+      manager.setFaxNum(dataMap.get("faxNum"));
+      manager.setPhotoPath(dataMap.get("photoPath"));
       
       
       response.setHeader("Refresh", "1;url=list");

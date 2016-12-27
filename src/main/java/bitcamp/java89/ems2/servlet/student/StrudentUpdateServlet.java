@@ -2,6 +2,7 @@ package bitcamp.java89.ems2.servlet.student;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import bitcamp.java89.ems2.dao.MemberDao;
 import bitcamp.java89.ems2.dao.StudentDao;
 import bitcamp.java89.ems2.domain.Student;
+import bitcamp.java89.ems2.util.MultipartUtil;
 
 @WebServlet("/student/update")
 public class StrudentUpdateServlet extends HttpServlet {
@@ -22,17 +24,19 @@ public class StrudentUpdateServlet extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     
     try {
-      Student student = new Student();
-      student.setMemberNo(Integer.parseInt(request.getParameter("memberNo")));
-      student.setEmail(request.getParameter("email"));
-      student.setPassword(request.getParameter("password"));
-      student.setName(request.getParameter("name"));
-      student.setTel(request.getParameter("tel"));
+      Map<String,String> dataMap = MultipartUtil.parse(request);
+      
+      Student student = new Student();  
+      student.setMemberNo(Integer.parseInt(dataMap.get("memberNo")));
+      student.setEmail(dataMap.get("email"));
+      student.setPassword(dataMap.get("password"));
+      student.setName(dataMap.get("name"));
+      student.setTel(dataMap.get("tel"));
       //student.setWorking(request.getParameter("working").equals("Y")? true : false);
-      student.setWorking(Boolean.parseBoolean(request.getParameter("working")));
-      student.setGrade(request.getParameter("grade"));
-      student.setSchoolName(request.getParameter("schoolName"));
-      student.setPhotoPath(request.getParameter("photoPath"));
+      student.setWorking(Boolean.parseBoolean(dataMap.get("working")));
+      student.setGrade(dataMap.get("grade"));
+      student.setSchoolName(dataMap.get("schoolName"));
+      student.setPhotoPath(dataMap.get("photoPath"));
       
       response.setHeader("Refresh", "1;url=list");
       response.setContentType("text/html;charset=UTF-8");

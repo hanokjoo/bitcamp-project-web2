@@ -38,7 +38,7 @@ public class ManagerDetailServlet extends HttpServlet {
       rd.include(request, response);
       
       out.println("<h1>매니저 정보</h1>");
-      out.println("<form action='update' method='POST'>");
+      out.println("<form action='update' method='POST' enctype='multipart/form-data'>");
       
       ManagerDao managerDao = (ManagerDao)this.getServletContext().getAttribute("managerDao");
       
@@ -63,7 +63,10 @@ public class ManagerDetailServlet extends HttpServlet {
       out.println("</select>");
       out.println("</td></tr>");
       out.printf("<tr><th>팩스</th><td><input name='faxNum' type='text' value='%s'></td></tr>\n", manager.getFaxNum());
-      out.println("<tr><th>사진</th><td><input name='photoPath' type='file'></td></tr>\n");
+      out.printf("<tr><th>사진</th><td>"
+          + "<img src='../upload/%s' height='80'>"
+          + "<input name='photoPath' type='file'></td></tr>\n",
+          manager.getPhotoPath());
       out.println("</table>");
       
       out.println("<button type='submit'>변경</button>");
