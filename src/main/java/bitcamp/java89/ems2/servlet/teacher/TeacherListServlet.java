@@ -1,7 +1,6 @@
 package bitcamp.java89.ems2.servlet.teacher;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -23,48 +22,13 @@ public class TeacherListServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
       response.setContentType("text/html;charset=UTF-8");
-      PrintWriter out = response.getWriter();
-      
-      out.println("<!DOCTYPE html>");
-      out.println("<html>");
-      out.println("<head>");
-      out.println("<meta charset='UTF-8'>");
-      out.println("<title>강사 관리-목록</title>");
-      out.println("</head>");
-      out.println("<body>");
    
-      // HeaderServlet에게 머리말 HTML 생성을 요청한다.
-      RequestDispatcher rd = request.getRequestDispatcher("/header");
-      rd.include(request, response);
-      
-      out.println("<h1>강사 정보</h1>");
-      out.println("<a href='form.html'>추가</a><br>");
-      out.println("<table border='1'>");
-      out.println("<tr>");
-      out.println("  <th>강사번호</th><th>이름</th><th>전화</th><th>이메일</th><th>홈페이지</th>");
-      out.println("</tr>");
-      
       TeacherDao teacherDao = (TeacherDao)ContextLoaderListener.applicationContext.getBean("teacherDao");
       ArrayList<Teacher> list = teacherDao.getList(); 
+      request.setAttribute("teachers", list);
       
-      for (Teacher teacher : list) {
-        out.println("<tr>");
-        out.printf("  <td>%d</td><td><a href='detail?memberNo=%1$d'>%s</a></td><td>%s</td><td>%s</td><td>%s</td>\n",
-            teacher.getMemberNo(),
-            teacher.getName(),
-            teacher.getTel(),
-            teacher.getEmail(),
-            teacher.getHomePage());
-        out.println("</tr>");
-      }
-      out.println("</table>");
-      
-   // FooterServlet에게 꼬리말 HTML 생성을 요청한다.
-      rd = request.getRequestDispatcher("/footer");
+      RequestDispatcher rd = request.getRequestDispatcher("/teacher/list.jsp");
       rd.include(request, response);
-      
-      out.println("</body>");
-      out.println("</html>");
       
     } catch (Exception e) {
       request.setAttribute("error", e);

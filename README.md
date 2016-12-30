@@ -1,5 +1,18 @@
 # bitcamp-project-web2
 
+## 1.5 - JSP를 사용하여 화면 출력 부분을 분리한다
+- MVC 구조를 완성한다.
+- StudentListServlet에서 출력 분리
+  - /webapp/student/list.jsp 파일 생성
+  - /header.jsp 파일 생성
+  - /footer.jsp 파일 생성
+- JSTL 라이브러리 사용
+  - build.gradle 변경
+  - "gradle eclipse" 실행하여 라이브러리 다운로드 및 이클립스 설정 파일 생성
+  - JSP 파일에 JSP 확장 태그 적용
+- 강사 목록, 매니저 목록에 적용
+
+
 ## 1.4 - 스프링 IoC 컨테이너 적용
 - 스프링 라이브러리 파일 준비
   - build.gradle 파일에 스프링 의존 라이브러리 추가

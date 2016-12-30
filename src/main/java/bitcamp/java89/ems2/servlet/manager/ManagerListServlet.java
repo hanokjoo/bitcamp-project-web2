@@ -1,7 +1,6 @@
 package bitcamp.java89.ems2.servlet.manager;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -23,51 +22,14 @@ public class ManagerListServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
       response.setContentType("text/html;charset=UTF-8");
-      PrintWriter out = response.getWriter();
-      
-      out.println("<!DOCTYPE html>");
-      out.println("<html>");
-      out.println("<head>");
-      out.println("<meta charset='UTF-8'>");
-      out.println("<title>매니저 관리-목록</title>");
-      out.println("</head>");
-      out.println("<body>");
-      
-   // HeaderServlet에게 머리말 HTML 생성을 요청한다.
-      RequestDispatcher rd = request.getRequestDispatcher("/header");
-      rd.include(request, response);
-      
-      out.println("<h1>매니저 정보</h1>");
-      out.println("<a href='form.html'>추가</a><br>");
-      out.println("<table border='1'>");
-      out.println("<tr>");
-      out.println("  <th>매니저번호</th><th>이름</th><th>전화</th><th>이메일</th><th>직급</th><th>팩스번호</th>");
-      out.println("</tr>");
       
       ManagerDao managerDao = (ManagerDao)ContextLoaderListener.applicationContext.getBean("managerDao");
-      ArrayList<Manager> list = managerDao.getList(); 
+      ArrayList<Manager> list = managerDao.getList();
+      request.setAttribute("managers", list);
       
-      for (Manager manager : list) {
-        out.println("<tr>");
-        out.printf("  <td>%d</td>"
-            + "<td><a href='detail?memberNo=%1$d'>%s</a></td>"
-            + "<td>%s</td><td>%s</td><td>%s</td><td>%s</td>\n",
-            manager.getMemberNo(),
-            manager.getName(),
-            manager.getTel(),
-            manager.getEmail(),
-            manager.getPosition(),
-            manager.getFaxNum());
-        out.println("</tr>");
-      }
-      out.println("</table>");
-      
-   // FooterServlet에게 꼬리말 HTML 생성을 요청한다.
-      rd = request.getRequestDispatcher("/footer");
+      RequestDispatcher rd = request.getRequestDispatcher("/manager/list.jsp");
       rd.include(request, response);
       
-      out.println("</body>");
-      out.println("</html>");
     } catch (Exception e) {
       request.setAttribute("error", e);
       RequestDispatcher rd = request.getRequestDispatcher("/error");
