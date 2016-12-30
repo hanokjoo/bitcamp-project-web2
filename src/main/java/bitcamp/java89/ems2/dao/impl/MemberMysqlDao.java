@@ -4,19 +4,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.mysql.jdbc.Statement;
 
 import bitcamp.java89.ems2.dao.MemberDao;
 import bitcamp.java89.ems2.domain.Member;
 import bitcamp.java89.ems2.util.DataSource;
 
+@Repository("memberDao")
 public class MemberMysqlDao implements MemberDao {
   
-  DataSource ds;
-  
-  public void setDataSource(DataSource ds) {
-    this.ds = ds;
-  }
+  @Autowired DataSource ds;
 
   public boolean exist(String email) throws Exception {
     Connection con = ds.getConnection();

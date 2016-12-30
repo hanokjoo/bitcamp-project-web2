@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.ArrayList;
 
-//@Component
+import org.springframework.stereotype.Component;
+
+@Component
 public class DataSource {
   ArrayList<Connection> conPool = new ArrayList<>();
 
