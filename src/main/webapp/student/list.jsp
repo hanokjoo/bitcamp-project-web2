@@ -15,7 +15,7 @@
 </head>
 <body>
 
-<jsp:include page="../header.jsp"></jsp:include>
+<jsp:include page="../header"/>
 
 <h1>학생 정보</h1>
 <a href='form.html'>추가</a><br>
@@ -40,7 +40,7 @@
 </c:forEach>
 </table>
 
-<jsp:include page='../footer.jsp'></jsp:include>
+<jsp:include page='../footer.jsp'/>
 
 </body>
 </html>

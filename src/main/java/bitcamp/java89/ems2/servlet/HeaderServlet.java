@@ -1,9 +1,9 @@
 package bitcamp.java89.ems2.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,32 +25,14 @@ public class HeaderServlet extends HttpServlet {
       throws ServletException, IOException {
   
     response.setContentType("text/html;charset=UTF-8");
-    PrintWriter out = response.getWriter();
-
-    out.println("<div id='header' style='background-color: gray; height: 60px;"
-        + " position:relative;'>");
-    out.println("<div style='width:300px; height:58px; "
-        + " position:absolute; left:0px; top:0px;'>");
-    out.println("<img src='../image/go.jpg' "
-        + "height='50' style='float: left; margin-top: 5px; margin-left: 5px;'>");
-    out.println("<div style='color: white; font-weight: bold; "
-        + "margin-left: 80px; padding-top: 15px; font-family: D2Coding, sans-serif; "
-        + "font-size: x-large;'>교육센터관리시스템</div>");
-    out.println("</div>");
-
-    // 로그인 사용자 정보를 가져온다.
-    out.println("<div style='height:50px; margin-top: 5px; float:right;'>");
     Member member = (Member)request.getSession().getAttribute("member");
     
-    if (member == null) {
-      out.println("<a href='../auth/login' style='position:absolute; right:0px; top:15px;'>로그인</a>");
-    } else {
-      out.printf("<img src='../upload/%s' height='50' style='vertical-align:middle;'>\n", this.getPhotoPath(member));
-      out.printf("<span>%s</span>\n", member.getName());
-      out.println("<a href='../auth/logout'>로그아웃</a>");
+    RequestDispatcher rd = request.getRequestDispatcher("/header.jsp");
+    if (member != null) {
+      request.setAttribute("photoPath", this.getPhotoPath(member));
     }
-    out.println("</div>");
-    out.println("</div>");
+    rd.include(request, response);
+    
   }
   
   private String getPhotoPath(Member member) {

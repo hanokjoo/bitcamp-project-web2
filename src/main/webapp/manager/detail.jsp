@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<jsp:include page="../header.jsp"/>
+<jsp:include page="../header"/>
 
 <h1>매니저 정보</h1>
 <form action='update' method='POST' enctype='multipart/form-data'>
@@ -36,12 +36,12 @@
 <tr><th>사진</th><td><img src='../upload/${manager.photoPath}' height='80'><input name='photoPath' type='file'></td></tr>
 </table>
 <button type='submit'>변경</button>
-<a href='delete?memberNo=23'>삭제</a>
-<input type='hidden' name='memberNo' value='23'>
+<a href='delete?memberNo=${manager.memberNo}'>삭제</a>
+<input type='hidden' name='memberNo' value='${manager.memberNo}'>
 <a href='list'>목록</a>
 </form>
 
-<jsp:include page="../footer.jsp"/>
+<jsp:include page="../footer"/>
 
 </body>
 </html>

@@ -1,7 +1,6 @@
 package bitcamp.java89.ems2.servlet.teacher;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,24 +24,6 @@ public class TeacherDeleteServlet extends HttpServlet {
     try {
       int memberNo = Integer.parseInt(request.getParameter("memberNo"));
       
-      response.setHeader("Refresh", "1;url=list");
-      response.setContentType("text/html;charset=UTF-8");
-      PrintWriter out = response.getWriter();
-      
-      out.println("<!DOCTYPE html>");
-      out.println("<html>");
-      out.println("<head>");
-      out.println("<meta charset='UTF-8'>");
-      out.println("<title>강사 관리-삭제</title>");
-      out.println("</head>");
-      out.println("<body>");  
-      
-   // HeaderServlet에게 머리말 HTML 생성을 요청한다.
-      RequestDispatcher rd = request.getRequestDispatcher("/header");
-      rd.include(request, response);
-      
-      out.println("<h1>삭제 결과</h1>");
-      
       TeacherDao teacherDao = (TeacherDao)ContextLoaderListener.applicationContext.getBean("teacherDao");
       
       if (!teacherDao.exist(memberNo)) {
@@ -58,18 +39,12 @@ public class TeacherDeleteServlet extends HttpServlet {
       if (!managerDao.exist(memberNo) && !studentDao.exist(memberNo)) {
         memberDao.delete(memberNo);
       }
-      out.println("<p>해당 데이터 삭제 완료하였습니다.</p>");
-      
-   // FooterServlet에게 꼬리말 HTML 생성을 요청한다.
-      rd = request.getRequestDispatcher("/footer");
-      rd.include(request, response);
-      
-      out.println("</body>");
-      out.println("</html>");
 
+      response.sendRedirect("list");
+      
     } catch (Exception e) {
       request.setAttribute("error", e);
-      RequestDispatcher rd = request.getRequestDispatcher("/error");
+      RequestDispatcher rd = request.getRequestDispatcher("/error.jsp");
       rd.forward(request, response);
       return;
     }

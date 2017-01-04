@@ -1,7 +1,9 @@
+<%@page import="java.io.PrintWriter"%>
 <%@ page 
     language="java" 
     contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
+    isErrorPage="true"
     trimDirectiveWhitespaces="true"%>
     
 <!DOCTYPE html>
@@ -12,11 +14,16 @@
 </head>
 <body>
 
-<jsp:include page="../header.jsp"/>
-<h1>로그인 실패</h1>
-<p>이메일 또는 암호가 일치하지 않거나, 해당 유형의 회원이 아닙니다.</p>
+<jsp:include page="/header.jsp"/>
+<h1>오류 내용</h1>
+<pre>
+<jsp:useBean id="error" class="java.lang.Throwable" scope="request"/>
+<%
+error.printStackTrace(new PrintWriter(out));
+%>
+</pre>
       
-<jsp:include page="../footer.jsp"/>
+<jsp:include page="/footer.jsp"/>
 
 </body>
 </html>

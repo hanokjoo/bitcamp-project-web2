@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<jsp:include page="../header.jsp"></jsp:include>
+<jsp:include page="../header"/>
 
 <h1>학생 정보</h1>
 <form action='update' method='POST' enctype='multipart/form-data'>
@@ -35,14 +35,14 @@
 </select>
 </td></tr>
 <tr><th>학교명</th><td><input name='schoolName' type='text' value='${student.schoolName}'></td></tr>
-<tr><th>사진</th><td><img src='../upload/${photoPath}' height='80'><input name='photoPath' type='file'></td></tr></table>
+<tr><th>사진</th><td><img src='../upload/${student.photoPath}' height='80'><input name='photoPath' type='file'></td></tr></table>
 <button type='submit'>변경</button>
 <a href='delete?memberNo=${student.memberNo}'>삭제</a>
 <input type='hidden' name='memberNo' value='${student.memberNo}'>
 <a href='list'>목록</a>
 </form>
 
-<jsp:include page="../footer.jsp"></jsp:include>
+<jsp:include page="../footer.jsp"/>
 
 </body>
 </html>
