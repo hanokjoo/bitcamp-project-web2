@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<jsp:include page="../header"/>
+<jsp:include page="../header.jsp"/>
 
 <h1>매니저 정보</h1>
 <a href='form.html'>추가</a><br>
@@ -27,7 +27,7 @@
 <c:forEach var="manager" items="${requestScope.managers}">
 <tr>
   <td>${manager.memberNo}</td>
-  <td><a href='detail?memberNo=${manager.memberNo}'>${manager.name}</a></td>
+  <td><a href='detail.do?memberNo=${manager.memberNo}'>${manager.name}</a></td>
   <td>${manager.tel}</td>
   <td>${manager.email}</td>
   <td>${manager.position}</td>
@@ -36,7 +36,7 @@
 </c:forEach>
 </table>
 
-<jsp:include page="../footer.jsp"></jsp:include>
+<jsp:include page="../footer"/>
 
 </body>
 </html>

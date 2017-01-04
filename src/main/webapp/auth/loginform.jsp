@@ -12,10 +12,16 @@
 </head>
 <body>
 
+<%-- 
+<jsp:include page="../header.do">
+  <jsp:param value="/header.do" name="servletPath"/>
+</jsp:include>
+--%>
+
 <jsp:include page="../header.jsp"/>
 
 <h1>로그인</h1>
-<form action='login' method='POST'>
+<form action='login.do' method='POST'>
 <table border='1'>
 <tr>
   <th>회원 유형</th>
@@ -32,7 +38,7 @@
 <button type='submit'>로그인</button>
 </form>
 
-<jsp:include page="../footer.jsp"/>
+<jsp:include page="../footer"/>
 
 </body>
 </html>
