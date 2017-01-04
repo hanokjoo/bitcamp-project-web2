@@ -28,7 +28,7 @@ public class DispatcherServlet extends HttpServlet {
  * 
       // 내부 서플릿이나 JSP에서 include 하는 경우 기존 ServletRequest를 사용하기 때문에 
       // getServletPath()가 리턴한 값이 이전 값과 같다.
-      // 그래서 내뷰에서 include/forward 한 경우를 고려해서 파라미터로 따로 전딜된 서블릿 경로를 사용하자.
+      // 그래서 내부에서 include/forward 한 경우를 고려해서 파라미터로 따로 전딜된 서블릿 경로를 사용하자.
       if (request.getParameter("servletPath") != null) {
         servletPath = request.getParameter("servletPath");
       }
