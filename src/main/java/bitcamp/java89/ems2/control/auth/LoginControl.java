@@ -52,7 +52,10 @@ public class LoginControl implements PageController {
     
     response.setHeader("Refresh", "2;url=loginform.do");
     
-    return "/auth/loginfail.jsp";
+    request.setAttribute("title", "로그인");
+    request.setAttribute("contentPage", "/auth/loginfail.jsp");
+    
+    return "/main.jsp";
   }
   
   private Member getMemberInfo(String userType, int memberNo) throws Exception {

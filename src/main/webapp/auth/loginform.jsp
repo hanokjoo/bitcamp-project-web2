@@ -4,22 +4,6 @@
     pageEncoding="UTF-8"
     trimDirectiveWhitespaces="true"%>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset='UTF-8'>
-<title>로그인</title>
-</head>
-<body>
-
-<%-- 
-<jsp:include page="../header.do">
-  <jsp:param value="/header.do" name="servletPath"/>
-</jsp:include>
---%>
-
-<jsp:include page="../header.jsp"/>
-
 <h1>로그인</h1>
 <form action='login.do' method='POST'>
 <table border='1'>
@@ -37,8 +21,3 @@
 </table>
 <button type='submit'>로그인</button>
 </form>
-
-<jsp:include page="../footer"/>
-
-</body>
-</html>

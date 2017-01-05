@@ -5,16 +5,6 @@
     trimDirectiveWhitespaces="true"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset='UTF-8'>
-<title>매니저 관리-상세정보</title>
-</head>
-<body>
-
-<jsp:include page="../header.jsp"/>
-
 <h1>매니저 정보</h1>
 <form action='update.do' method='POST' enctype='multipart/form-data'>
 <table border='1'>
@@ -40,8 +30,3 @@
 <input type='hidden' name='memberNo' value='${manager.memberNo}'>
 <a href='list.do'>목록</a>
 </form>
-
-<jsp:include page="../footer"/>
-
-</body>
-</html>
