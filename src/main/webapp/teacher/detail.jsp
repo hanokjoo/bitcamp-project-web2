@@ -15,9 +15,9 @@
 <tr><th>홈페이지</th><td><input name='homePage' type='text' value='${teacher.homePage}'></td></tr>
 <tr><th>페이스북</th><td><input name='faceBook' type='text' value='${teacher.faceBook}'></td></tr>
 <tr><th>트위터</th><td><input name='twitter' type='text' value='${teacher.twitter}'></td></tr>
-<tr><th>사진</th><td><img src='../upload/${photoList[0].filePath}' height='80'><input name='photoPath1' type='file'></td></tr>
-<tr><th>사진</th><td><img src='../upload/${photoList[1].filePath}' height='80'><input name='photoPath2' type='file'></td></tr>
-<tr><th>사진</th><td><img src='../upload/${photoList[2].filePath}' height='80'><input name='photoPath3' type='file'></td></tr>
+<tr><th>사진</th><td><img src='../upload/${photoList[0].filePath}' height='80'><input name='photo1' type='file'></td></tr>
+<tr><th>사진</th><td><img src='../upload/${photoList[1].filePath}' height='80'><input name='photo2' type='file'></td></tr>
+<tr><th>사진</th><td><img src='../upload/${photoList[2].filePath}' height='80'><input name='photo3' type='file'></td></tr>
 </table>
 <button type='submit'>변경</button>
 <a href='delete.do?memberNo=${teacher.memberNo}'>삭제</a>

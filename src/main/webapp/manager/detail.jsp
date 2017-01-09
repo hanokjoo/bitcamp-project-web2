@@ -23,7 +23,7 @@
 </select>
 </td></tr>
 <tr><th>팩스</th><td><input name='faxNum' type='text' value='${manager.faxNum}'></td></tr>
-<tr><th>사진</th><td><img src='../upload/${manager.photoPath}' height='80'><input name='photoPath' type='file'></td></tr>
+<tr><th>사진</th><td><img src='../upload/${manager.photoPath}' height='80'><input name='photo' type='file'></td></tr>
 </table>
 <button type='submit'>변경</button>
 <a href='delete.do?memberNo=${manager.memberNo}'>삭제</a>
