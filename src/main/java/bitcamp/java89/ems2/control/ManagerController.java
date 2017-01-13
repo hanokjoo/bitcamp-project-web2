@@ -53,11 +53,11 @@ public class ManagerController {
   
   @RequestMapping("/manager/add")
   public String add(Manager manager, MultipartFile photo) throws Exception {
-    if (managerDao.exist(manager.getEmail())) {
+    if (managerDao.count(manager.getEmail()) < 0) {
       throw new Exception("같은 이메일이 존재합니다. 등록을 취소합니다.");
     }
     
-    if (!memberDao.exist(manager.getEmail())) { // 강사나 학생으로 등록되지 않았다면,
+    if (memberDao.count(manager.getEmail()) == 0) { // 강사나 학생으로 등록되지 않았다면,
       memberDao.insert(manager);
     } else { // 강사나 학생으로 이미 등록된 사용자라면 기존의 회원 번호를 사용한다.
       Member member = memberDao.getOne(manager.getEmail());
@@ -78,13 +78,13 @@ public class ManagerController {
   
   @RequestMapping("/manager/delete")
   public String delete(int memberNo, HttpServletRequest request) throws Exception {
-    if (!managerDao.exist(memberNo)) {
+    if (managerDao.countByNo(memberNo) == 0) {
       throw new Exception("사용자를 찾지 못했습니다.");
     }
     
     managerDao.delete(memberNo);
     
-    if (!studentDao.exist(memberNo) && !teacherDao.exist(memberNo)) {
+    if (studentDao.countByNo(memberNo) == 0 && teacherDao.countByNo(memberNo) == 0) {
       memberDao.delete(memberNo);
     }
 
@@ -93,7 +93,7 @@ public class ManagerController {
   
   @RequestMapping("/manager/update")
   public String update(Manager manager, MultipartFile photo) throws Exception {
-    if (!managerDao.exist(manager.getMemberNo())) {
+    if (managerDao.countByNo(manager.getMemberNo()) == 0) {
       throw new Exception("사용자를 찾지 못했습니다.");
     }
     memberDao.update(manager);

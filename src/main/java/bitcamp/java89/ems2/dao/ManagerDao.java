@@ -10,6 +10,6 @@ public interface ManagerDao {
   public void insert(Manager manager) throws Exception;
   public void update(Manager manager) throws Exception;
   public void delete(int memberNo) throws Exception;
-  public boolean exist(int memberNo) throws Exception;
-  boolean exist(String email) throws Exception;
+  int countByNo(int memberNo) throws Exception;
+  int count(String email) throws Exception;
 }
