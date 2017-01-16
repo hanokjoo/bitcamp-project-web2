@@ -1,7 +1,5 @@
 package bitcamp.java89.ems2.control;
 
-import java.util.HashMap;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -11,18 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import bitcamp.java89.ems2.dao.ManagerDao;
-import bitcamp.java89.ems2.dao.MemberDao;
-import bitcamp.java89.ems2.dao.StudentDao;
-import bitcamp.java89.ems2.dao.TeacherDao;
 import bitcamp.java89.ems2.domain.Member;
+import bitcamp.java89.ems2.service.AuthService;
 
 @Controller
-public class AuthController {
-  @Autowired MemberDao memberDao;
-  @Autowired StudentDao studentDao;
-  @Autowired ManagerDao managerDao;
-  @Autowired TeacherDao teacherDao;
+public class AuthControl {
+  @Autowired AuthService authService;
   
   @RequestMapping("/auth/login")
   public String login(String saveEmail, String email, String password, String userType,
@@ -39,37 +31,17 @@ public class AuthController {
       response.addCookie(cookie);
     }
     
-    HashMap<String, String> paramMap = new HashMap<>();
-    paramMap.put("email", email);
-    paramMap.put("password", password);
-    Member member = memberDao.getOneByEmailPassword(paramMap);
-    if (member != null) {
-      Member detailMember = this.getMemberInfo(userType, member.getMemberNo());
-      
-      if (detailMember != null) {
-        session.setAttribute("member", detailMember); // HttpSession에 저장한다.
-        return "redirect:../student/list.do";
-      }
+    Member member = authService.getMemberInfo(email, password, userType);
+    
+    if (member == null) {
+      response.setHeader("Refresh", "2;url=loginform.do");
+      model.addAttribute("title", "로그인");
+      model.addAttribute("contentPage", "/auth/loginfail.jsp");
+      return "main";
     }
-    
-    response.setHeader("Refresh", "2;url=loginform.do");
-    
-    model.addAttribute("title", "로그인");
-    model.addAttribute("contentPage", "/auth/loginfail.jsp");
-    
-    return "main";
-  }
-  
-  private Member getMemberInfo(String userType, int memberNo) throws Exception {
-    if (userType.equals(Member.STUDENT)) {
-      return studentDao.getOne(memberNo);
       
-    } else if (userType.equals(Member.TEACHER)) {
-      return teacherDao.getOneWithPhoto(memberNo);
-      
-    } else /*if (userType.equals(Member.MANAGER))*/ {
-      return managerDao.getOne(memberNo);
-    }
+    session.setAttribute("member", member); // HttpSession에 저장한다.
+    return "redirect:../student/list.do";
   }
   
   @RequestMapping("/auth/loginform")

@@ -21,7 +21,7 @@ import bitcamp.java89.ems2.domain.Member;
 import bitcamp.java89.ems2.util.MultipartUtil;
 
 @Controller
-public class ManagerController {
+public class ManagerControl {
   @Autowired ServletContext sc;
   @Autowired ManagerDao managerDao;
   @Autowired MemberDao memberDao;

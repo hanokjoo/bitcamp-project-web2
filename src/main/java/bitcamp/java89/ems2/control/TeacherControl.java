@@ -23,7 +23,7 @@ import bitcamp.java89.ems2.domain.Teacher;
 import bitcamp.java89.ems2.util.MultipartUtil;
 
 @Controller
-public class TeacherController {
+public class TeacherControl {
   @Autowired ServletContext sc;
   @Autowired TeacherDao teacherDao;
   @Autowired MemberDao memberDao;
