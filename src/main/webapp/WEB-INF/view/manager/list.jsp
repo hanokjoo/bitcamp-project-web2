@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <h1>매니저 정보</h1>
-<a href='form.html'>추가</a><br>
+<a href='form.do'>추가</a><br>
 <table border='1'>
 <tr>
   <th>매니저번호</th>

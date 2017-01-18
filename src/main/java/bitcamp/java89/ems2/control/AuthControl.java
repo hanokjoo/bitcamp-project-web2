@@ -36,7 +36,7 @@ public class AuthControl {
     if (member == null) {
       response.setHeader("Refresh", "2;url=loginform.do");
       model.addAttribute("title", "로그인");
-      model.addAttribute("contentPage", "/auth/loginfail.jsp");
+      model.addAttribute("contentPage", "auth/loginfail.jsp");
       return "main";
     }
       
@@ -47,7 +47,7 @@ public class AuthControl {
   @RequestMapping("/auth/loginform")
   public String loginform(Model model) throws Exception {
     model.addAttribute("title", "로그인");
-    model.addAttribute("contentPage", "/auth/loginform.jsp");
+    model.addAttribute("contentPage", "auth/loginform.jsp");
     
     return "main";
   }
