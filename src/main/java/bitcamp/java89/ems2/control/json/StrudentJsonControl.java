@@ -30,23 +30,18 @@ public class StrudentJsonControl {
   }
   
   @RequestMapping("/student/list")
-  public List<Student> list() throws Exception {
+  public AjaxResult list() throws Exception {
     List<Student> list = studentService.getList();
-    return list;
+    return new AjaxResult(AjaxResult.SUCCESS, list);
   }
   
   @RequestMapping("/student/detail")
-  public String detail(int memberNo, Model model) throws Exception {
+  public AjaxResult detail(int memberNo) throws Exception {
     Student student = studentService.getDetail(memberNo);
     if (student == null) {
-      throw new Exception("해당 일련번호의 학생이 없습니다.");
+      return new AjaxResult(AjaxResult.FAIL, "해당 일련번호의 학생이 없습니다.");
     }
-    // 페이지 컨트롤러는 모델 객체가 리턴한 값을 JSP가 출력할 수 있도록 가공하는 일을 한다.
-    model.addAttribute("student", student);
-    model.addAttribute("title", "학생 관리-상세정보");
-    model.addAttribute("contentPage", "student/detail.jsp");
-
-    return "main";
+    return new AjaxResult(AjaxResult.SUCCESS, student);
   }
   
   @RequestMapping("/student/add")

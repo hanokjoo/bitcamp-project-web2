@@ -39,7 +39,8 @@ body{
 </div><div id="content"> 
 <h1>학생 정보</h1>
 <a href='form.do'>추가</a><br>
-<table border='1'>
+<table id='list-table' border='1'>
+<thead>
 <tr>
   <th>회원번호</th>
   <th>이름</th> 
@@ -48,157 +49,56 @@ body{
   <th>최종학력</th>
   <th>학교명</th>
 </tr>
-<tr>
-  <td>1</td>
-  <td><a href='detail.do?memberNo=1'>학생1</a></td>
-  <td>111-1111</td>
-  <td>true</td>
-  <td>학사</td>
-  <td>비트대학교</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td><a href='detail.do?memberNo=2'>학생2</a></td>
-  <td>111-1111</td>
-  <td>true</td>
-  <td>학사</td>
-  <td>한국대학교</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td><a href='detail.do?memberNo=3'>학생3</a></td>
-  <td>111-1111</td>
-  <td>true</td>
-  <td>학사</td>
-  <td>하버드대학교</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td><a href='detail.do?memberNo=4'>학생4</a></td>
-  <td>111-1111</td>
-  <td>false</td>
-  <td>고졸</td>
-  <td>비트고등학교</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td><a href='detail.do?memberNo=5'>학생5</a></td>
-  <td>111-1111</td>
-  <td>false</td>
-  <td>고졸</td>
-  <td>성남고등학교</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td><a href='detail.do?memberNo=6'>학생6</a></td>
-  <td>111-1111</td>
-  <td>true</td>
-  <td>고졸</td>
-  <td>부산고등학교</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td><a href='detail.do?memberNo=7'>학생7</a></td>
-  <td>111-1111</td>
-  <td>true</td>
-  <td>학사</td>
-  <td></td>
-</tr>
-<tr>
-  <td>8</td>
-  <td><a href='detail.do?memberNo=8'>학생8</a></td>
-  <td>111-1111</td>
-  <td>false</td>
-  <td>학사</td>
-  <td></td>
-</tr>
-<tr>
-  <td>9</td>
-  <td><a href='detail.do?memberNo=9'>학생9</a></td>
-  <td>111-1111</td>
-  <td>true</td>
-  <td></td>
-  <td>비트고등학교</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td><a href='detail.do?memberNo=10'>학생10</a></td>
-  <td>111-1111</td>
-  <td>false</td>
-  <td>고졸</td>
-  <td>성남고등학교</td>
-</tr>
-<tr>
-  <td>46</td>
-  <td><a href='detail.do?memberNo=46'>학생106</a></td>
-  <td>111-1111</td>
-  <td>false</td>
-  <td>고졸</td>
-  <td>비트고등학교</td>
-</tr>
-<tr>
-  <td>54</td>
-  <td><a href='detail.do?memberNo=54'>학생110</a></td>
-  <td>111-1111</td>
-  <td>false</td>
-  <td>고졸</td>
-  <td>비트고등학교</td>
-</tr>
-<tr>
-  <td>55</td>
-  <td><a href='detail.do?memberNo=55'>학생111</a></td>
-  <td>111-1111</td>
-  <td>true</td>
-  <td>고졸</td>
-  <td>비트고등학교</td>
-</tr>
-<tr>
-  <td>58</td>
-  <td><a href='detail.do?memberNo=58'>학생114</a></td>
-  <td>111-1114</td>
-  <td>false</td>
-  <td>고졸</td>
-  <td>비트고</td>
-</tr>
-<tr>
-  <td>61</td>
-  <td><a href='detail.do?memberNo=61'>학생강</a></td>
-  <td>111-4444</td>
-  <td>true</td>
-  <td>학사</td>
-  <td>강남대학교</td>
-</tr>
-</table></div>
-
+</thead>
+<tbody></tbody>
+</table>
+</div>
 
 <div id='footer' style='background-color: gray; height: 30px; margin-top: 20px;'></div>
 
+<script src="../js/bit.js"></script>
+<script src="../js/common.js"></script>
 <script>
-// header.html을 가져와서 붙인다.
-get('../header.html', function(result) {
-	document.querySelector('#header').innerHTML = result;
-});
-
-// sidebar.html을 가져와서 붙인다.
-get('../sidebar.html', function(result) {
-  document.querySelector('#sidebar').innerHTML = result;
-});
 
 // 학생 목록 가져와서 tr 태그를 만들어 붙인다.
-get('list.json', function(result) {
-  console.log(result);
+get('list.json', function(jsonText) {
+  // result JSON 문자열을 자바스크립트 객체로 만든다.
+  var resultResult = JSON.parse(jsonText).ajaxResult;
+  var status = resultResult.status;
+  
+  if (status != "success") {
+	  return;
+  }
+  
+  var list = resultResult.data;
+  var tbody = document.querySelector('#list-table > tbody');
+  
+  for (var student of list) {
+	  var tr = document.createElement("tr");
+	  tr.innerHTML = "<tr><td>" + 
+	    student.memberNo + "</td><td><a class='name-link' href='#' data-no='" +
+	    student.memberNo + "'>" + 
+	    student.name + "</a></td><td>" + 
+	    student.tel + "</td><td>" + 
+	    student.working + "</td><td>" + 
+	    student.grade + "</td><td>" + 
+	    student.schoolName + "</td></tr>";
+	  tbody.appendChild(tr);
+  }
+	// 학생 목록에서 이름 링크에 대해 click 이벤트를 처리한다.
+	var al = document.querySelectorAll('.name-link');
+	for (var a of al) {
+		a.onclick = function(event) {
+			event.preventDefault();
+			location.href = 'view.html?memberNo=' + this.getAttribute("data-no");
+			// 사용자가 임의로 추가한 속성은 setAttribute/getAttribute로 값을 사용해야 한다.
+		}
+	}
 });
 
-function get(url, success) {
-	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function() {
-	  if (xhr.readyState < 4) {
-	    return;
-	  }
-	  success(xhr.responseText);
-	}
-	xhr.open('get', url, true);
-	xhr.send();
+function goView(no) {
+	alert(no);
+	return false;
 }
 </script>
 
