@@ -10,6 +10,7 @@
 <h1>학생 정보</h1>
 <a href='form.do'>추가</a><br>
 <table border='1'>
+<thead>
 <tr>
   <th>회원번호</th>
   <th>이름</th> 
@@ -18,6 +19,9 @@
   <th>최종학력</th>
   <th>학교명</th>
 </tr>
+</thead>
+
+<tbody>
 <c:forEach var="student" items="${requestScope.students}">
 <tr>
   <td>${student.memberNo}</td>
@@ -28,4 +32,5 @@
   <td>${student.schoolName}</td>
 </tr>
 </c:forEach>
+</tbody>
 </table>
