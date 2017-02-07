@@ -1,5 +1,16 @@
 # bitcamp-project-web2
 
+## 3.7 - hadlebars HTML 템플릿 엔진 적용
+1) 테이블에 삽입될 tr 태그 템플릿을 정의한다.
+2) handlebars 엔진을 사용하여 tr 태그를 자동 생성한다.
+
+
+## 3.6 - bootstrap CSS 라이브러리 적용
+1) npm으로 bootstrap 라이브러리 추가한다.
+   > npm install bootstrap --save
+2) HTML에 부트스트랩 CSS와 JavaScript 적용한다.
+
+
 ## 3.5 - npm을 이용하여 프론트 엔드 라이브러리 관리하기
 1) nodejs 설치한다.
 2) 명령창에서 /webapp 폴더로 이동한다.
